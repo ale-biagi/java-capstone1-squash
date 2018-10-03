@@ -8,23 +8,28 @@ import java_course.capstone1.squash.view.Observer;
 public abstract class GameObject implements Observable, Movable {
 	
 	// this is the base abstract class for every game object (element)
-	// every element is observable by and "observer" (view) and can be moved along the screen
+	// every element is observable by an "observer" (view) and can be moved along the screen
 	
-	// every element has a position in the screen, a size, a direction to move and a moving state (moving or stopped)
+	// every element has a position in the screen, a size, a direction to move and a moving state (moving or stopped)...
 	public ScreenPosition screenPosition;
 	public Size size;
 	public int direction;
 	public boolean keepMoving = false;
 	
+	// ...and should keep tracking of the current score
+	public ScoreBoard scorer;
+	
 	protected List<Observer> observers = new ArrayList<Observer>();
 
-	public GameObject(ScreenPosition screenPosition, Size size, int direction) {
+	public GameObject(ScoreBoard scorer, ScreenPosition screenPosition, Size size, int direction) {
+		this.scorer = scorer;
 		this.screenPosition = screenPosition;
 		this.size = size;
 		this.direction = direction;
 	}
 	
-	public GameObject(ScreenPosition screenPosition, Size size) {
+	public GameObject(ScoreBoard scorer, ScreenPosition screenPosition, Size size) {
+		this.scorer = scorer;
 		this.screenPosition = screenPosition;
 		this.size = size;
 		this.direction = Direction.RIGHT;
@@ -46,6 +51,11 @@ public abstract class GameObject implements Observable, Movable {
 
 	@Override
 	public void move() {
+		// stop game when there are no balls left
+		if (this.scorer.balls < 0) {
+			this.keepMoving = false;
+		}
+		
 		// moving is a standard behavior of every game element
 		if (!this.keepMoving) {
 			// when stopped it just notifies the observers and do nothing else

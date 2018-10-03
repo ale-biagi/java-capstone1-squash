@@ -3,20 +3,22 @@ package java_course.capstone1.squash.model;
 public class Paddle extends GameObject {
 
 	// these constructors just expose the super class constructors
-	public Paddle(ScreenPosition screenposition, Size size, int direction) {
-		super(screenposition, size, direction);
+	public Paddle(ScoreBoard scorer, ScreenPosition screenposition, Size size, int direction) {
+		super(scorer, screenposition, size, direction);
 	}
 
-	public Paddle(ScreenPosition screenposition, Size size) {
-		super(screenposition, size);
+	public Paddle(ScoreBoard scorer, ScreenPosition screenposition, Size size) {
+		super(scorer, screenposition, size);
 	}
 
-	public Paddle() {
+	public Paddle(ScoreBoard scorer) {
 		// paddle is constructed with the default width and height of the class size and positioned at screen center
-		super(new ScreenPosition((int)((Screen.WIDTH - new Size().width) / 2), Screen.HEIGHT - (new Size().height) - 5),
+		super(scorer, new ScreenPosition((int)((Screen.WIDTH - new Size().width) / 2), Screen.HEIGHT - (new Size().height) - 5),
 			  new Size());
 		// initial moving state is "stopped"
 		this.keepMoving = false;
+		// assign the scorer object
+		this.scorer = scorer;
 	}
 
 	@Override

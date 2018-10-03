@@ -10,19 +10,18 @@ public class Ball extends GameObject {
 	// so we associate that "hitting" element to it
 	private GameObject bouncer;
 	
-	
 	// these constructors just expose the super class constructors
-	public Ball(ScreenPosition screenposition, Size size, int direction) {
-		super(screenposition, size, direction);
+	public Ball(ScoreBoard scorer, ScreenPosition screenposition, Size size, int direction) {
+		super(scorer, screenposition, size, direction);
 	}
 
-	public Ball(ScreenPosition screenposition, Size size) {
-		super(screenposition, size);
+	public Ball(ScoreBoard scorer, ScreenPosition screenposition, Size size) {
+		super(scorer, screenposition, size);
 	}
 
-	public Ball(GameObject bouncer) {
+	public Ball(GameObject bouncer, ScoreBoard scorer) {
 		// paddle is constructed with a default size of 30 x 30 pixel and an arbitrary initial position
-		super(new ScreenPosition(0, 10), new Size(30, 30));
+		super(scorer, new ScreenPosition(0, 10), new Size(30, 30));
 		
 		// the element which will make the ball bounce is passed in the constructor and assigned to a private attribute
 		this.bouncer = bouncer;
@@ -37,11 +36,14 @@ public class Ball extends GameObject {
 		Random rand = new Random();
 		
 		this.screenPosition.x = rand.nextInt(Screen.WIDTH - this.size.width - 5) + 10;
-		this.screenPosition.y = 10;
+		this.screenPosition.y = 67;
 		
 		int d = (rand.nextInt(3) + 1) * 2;
 		while (d == this.direction) { d = (rand.nextInt(3) + 1) * 2; }
 		this.direction = d;
+
+		// one ball less
+		this.scorer.balls--;
 	}
 	
 	@Override
@@ -63,7 +65,7 @@ public class Ball extends GameObject {
 		Random rand = new Random();
 
 		if (this.screenPosition.x <= 10	||
-			this.screenPosition.y <= 10	||
+			this.screenPosition.y <= 67	||
 			rightUpperX >= Screen.WIDTH) {
 			// ball hit screen bounds
 			if (this.screenPosition.x <= 10) {
@@ -76,7 +78,7 @@ public class Ball extends GameObject {
 				while(d == 2 || d == 3 || d == 4 || d == 5 || d == opposite) { d = (rand.nextInt(7) + 1); }
 				this.direction = d;
 			} else {
-				if (this.screenPosition.y <= 10) {
+				if (this.screenPosition.y <= 67) {
 					// ball hit upper bound
 					int opposite = 	(this.direction == Direction.UP) ? Direction.DOWN : 
 									(this.direction == Direction.LEFT_UP) ? Direction.RIGHT_DOWN : 
@@ -85,6 +87,10 @@ public class Ball extends GameObject {
 					int d = (rand.nextInt(3) + 1) * 2;
 					while(d == opposite) { d = (rand.nextInt(3) + 1) * 2; }
 					this.direction = d;
+					 
+					// some points should be earned (the closest to the middle, the higher the score)
+					int points = (this.screenPosition.x <= (Screen.WIDTH / 2)) ? (this.screenPosition.x * 100) / (Screen.WIDTH / 2) : ((Screen.WIDTH / 2) * 100) / this.screenPosition.x;
+					this.scorer.score += points;
 				} else {
 					// ball hit right bound
 					int opposite = 	(this.direction == Direction.RIGHT) ? Direction.LEFT : 

@@ -15,7 +15,7 @@ public class PaddleView extends Observer {
 
 	@Override
 	public void update() {
-		// a paddle is drawn as an "rectangle" at the screen
+		// a paddle is drawn as a "rectangle" at the screen
 		display.fill(0);
 		display.stroke(255,255,255);
 		display.rect(this.object.screenPosition.x, 
