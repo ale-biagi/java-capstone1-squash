@@ -21,7 +21,10 @@ public class ScoreBoard extends ScreenObject {
 	// the score must be displayed using a "999999" mask
 	public String displayScore( ) {
 		String formatedScore = this.score + "";
-		while(formatedScore.length() < 6) formatedScore = "0" + formatedScore;
+		
+		if (this.score < 100000) {
+			while(formatedScore.length() < 6) formatedScore = "0" + formatedScore;
+		}
 		
 		return(formatedScore);
 	}
