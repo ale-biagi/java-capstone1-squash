@@ -25,7 +25,7 @@ public class SquashGame extends PApplet {
 	
 	@Override
 	public void settings() {
-		// setup screen size
+		// setup screen size and frame rate
 		// OBS: modify the values of the constants WIDTH and HEIGHT in the Screen class to change screen size
 		size(Screen.WIDTH, Screen.HEIGHT);
 	}

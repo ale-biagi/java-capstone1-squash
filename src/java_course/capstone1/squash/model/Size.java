@@ -16,6 +16,6 @@ public class Size {
 
 	// ...or default dimensions (this default is used by a paddle)
 	public Size() {
-		this(220, 35);
+		this(170, 35);
 	}
 }
