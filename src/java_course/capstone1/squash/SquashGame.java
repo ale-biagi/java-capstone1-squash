@@ -9,7 +9,7 @@ import processing.event.KeyEvent;
 
 public class SquashGame extends PApplet {
 
-	// define the screen elements (screen objects) and their respective controllers
+	// define the screen elements (screen objects), and their respective controllers
 	private ScoreBoard scoreBoard;
 	private ScreenObjectController scoreBoardController;
 	
